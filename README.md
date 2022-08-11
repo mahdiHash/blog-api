@@ -12,7 +12,7 @@ The technologies I used:
 - [Multer](https://github.com/expressjs/multer) package,
 - [Passport-jwt](http://www.passportjs.org/packages/passport-jwt/) and [Passport-local](https://www.passportjs.org/packages/passport-local/) for authentication.
 
-To know how to use it and read about features, please visit [this page](https://github.com/mahdiHash/blog-api/blob/master/howtouse.md).
+To know how to use it and read about features, please visit [this file](https://github.com/mahdiHash/blog-api/blob/master/howToUse.md).
 
 ## How to run
 
