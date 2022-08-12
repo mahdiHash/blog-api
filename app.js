@@ -1,6 +1,7 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const cors = require('cors');
 const errHandler = require('./controllers/error');
 const { ServerSideErr, NotFoundErr } = require('./lib/errors');
 
@@ -24,6 +25,8 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.use(cors());
 
 app.get('/convertmdtohtml', require('./controllers/convertmdtohtml'));
 
