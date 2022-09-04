@@ -74,7 +74,6 @@
     - `username`: <*String*>
     - `profile_pic`: <*String*> user's profile pic name in the cloud storage. Accessible by: `/img/{user.profile_pic}`.
     - `comments`: [<*Object*>]
-    - `is_admin`: <*Boolean*>
 
 - **DELETE user**: `/users/:username/` <span style="background-color: lightgreen; color: black; border-radius: 10px; padding: 0 3px 2px 3px;">login required</span>
 
