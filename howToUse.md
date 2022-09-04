@@ -21,6 +21,7 @@
     - `dislikes`: [<*String*>] this will be the users ids who disliked the post
     - `last_update`: <*Number*>
     - `comments`: [<*String*>] this will the comments id
+    - `url_form_of_title`: <*String*> this is the url to the post by its title
   - The content of the post will not be returned for performance purposes.
 
 - **GET specific post by title**: `/posts/:title/`
