@@ -46,4 +46,4 @@ Now you need to create a `.env` file in the root directory. This file is needed 
 
 After these steps, you need to install the dependencies. For that, you can write `npm install` in the terminal. This will install all the dependencies the project needs.
 
-Now to run a local server, enter `npm run start` (you can also write `npm run devstart` to use [nodemon](https://github.com/remy/nodemon)). After starting the server, you can send requests anyhow you're comfortable with (e.g. Postname) and get the response. The base URI is `http://127.0.0.1:3000` or `http://localhost:3000`.
+Now to run a local server, enter `npm run start` (you can also write `npm run devstart` to use [nodemon](https://github.com/remy/nodemon)). After starting the server, you can send requests anyhow you're comfortable with (e.g. Postman) and get the response. The base URI is `http://127.0.0.1:3000` or `http://localhost:3000`.
