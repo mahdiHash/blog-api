@@ -1,6 +1,5 @@
 const Comment = require('../../models/comment');
 const Post = require('../../models/post');
-const User = require('../../models/user');
 const passport = require('passport');
 const { body, validationResult } = require('express-validator');
 const errHandler = require('../error');
