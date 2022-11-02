@@ -27,18 +27,11 @@ const controller = [
           return errHandler(new BadRequestErr('No such comment'), req, res);
         }
 
-        // user is logged in
-        if (req.user) {
-          if (req.user.username !== comment.author) {
-            return errHandler([new ForbiddenErr()], req, res);
-          }
-          else {
-            next();
-          }
+        if (req.user.username !== comment.author) {
+          return errHandler([new ForbiddenErr()], req, res);
         }
-        // user is not logged in
         else {
-          return errHandler([new UnauthorizedErr()], req, res);
+          next();
         }
       })
   },
