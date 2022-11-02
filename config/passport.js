@@ -13,6 +13,8 @@ const {
   BadRequestErr,
 } = require('../lib/errors');
 
+require('dotenv').config();
+
 passport.use(new LocalStrategy((username, password, done) => {
   User.findOne({ username })
     .exec((err, user) => {
