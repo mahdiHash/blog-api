@@ -13,15 +13,6 @@ const controller = [
   passport.initialize(),
   passport.authenticate('jwt', { session: false }),
 
-  // authentication check
-  (req, res, next) => {
-    if (!req.user) {
-      return errHandler(new UnauthorizedErr(), req, res);
-    }
-
-    next();
-  },
-
   (req, res, next) => {
     Comment.findById(req.params.id)
       .select('likes dislikes')
