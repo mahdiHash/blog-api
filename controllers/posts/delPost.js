@@ -1,4 +1,5 @@
 const Post = require('../../models/post');
+const Comment = require('../../models/comment');
 const errHandler = require('../error');
 const passport = require('passport');
 const {
@@ -35,9 +36,15 @@ const controller = [
         if (!result) {
           errHandler(new BadRequestErr(''), req, res);
         }
-        else {
-          res.json('The post is successfully deleted.');
-        }
+
+        Comment.deleteMany({ post: result._id }, (err) => {
+          if (err) {
+            errHandler(new BadGatewayErr(), req, res);
+          }
+          else {
+            res.json('The post is successfully deleted.');
+          }
+        })
       });
   }
 ];
