@@ -7,7 +7,6 @@ const md = require('markdown-it')();
 const {
   BadGatewayErr,
   ForbiddenErr,
-  UnauthorizedErr,
   BadRequestErr,
 } = require('../../lib/errors');
 
@@ -17,18 +16,11 @@ const controller = [
 
   // check for authentication
   (req, res, next) => {
-    // user is logged in
-    if (req.user) {
-      if (!req.user.is_admin) {
-        return errHandler(new ForbiddenErr(), req, res);
-      }
-      else {
-        next();
-      }
+    if (!req.user.is_admin) {
+      return errHandler(new ForbiddenErr(), req, res);
     }
-    // user is not logged in
     else {
-      return errHandler(new UnauthorizedErr(), req, res);
+      next();
     }
   },
 

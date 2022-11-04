@@ -1,8 +1,8 @@
 const Post = require('../../models/post');
+const Comment = require('../../models/comment');
 const errHandler = require('../error');
 const passport = require('passport');
 const {
-  UnauthorizedErr,
   BadRequestErr,
   BadGatewayErr,
   ForbiddenErr,
@@ -16,19 +16,12 @@ const controller = [
 
   // check for authentication
   (req, res, next) => {
-    // user is logged in
-    if (req.user) {
-      if (!req.user.is_admin) {
-        return errHandler(new ForbiddenErr(), req, res);
-      }
-      else {
-        // user is admin so go the next middleware
-        next();
-      }
+    if (!req.user.is_admin) {
+      return errHandler(new ForbiddenErr(), req, res);
     }
-    // user is not logged in
     else {
-      return errHandler(new UnauthorizedErr(), req, res);
+      // user is admin so go the next middleware
+      next();
     }
   },
 
@@ -43,9 +36,15 @@ const controller = [
         if (!result) {
           errHandler(new BadRequestErr(''), req, res);
         }
-        else {
-          res.json('The post is successfully deleted.');
-        }
+
+        Comment.deleteMany({ post: result._id }, (err) => {
+          if (err) {
+            errHandler(new BadGatewayErr(), req, res);
+          }
+          else {
+            res.json('The post is successfully deleted.');
+          }
+        })
       });
   }
 ];

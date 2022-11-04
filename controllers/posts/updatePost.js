@@ -5,7 +5,6 @@ const { body, validationResult } = require('express-validator');
 const {
   BadRequestErr,
   BadGatewayErr,
-  UnauthorizedErr,
   ForbiddenErr,
 } = require('../../lib/errors');
 
@@ -17,19 +16,12 @@ const controller = [
 
   // check for authentication
   (req, res, next) => {
-    // user is logged in
-    if (req.user) {
-      if (!req.user.is_admin) {
-        return errHandler(new ForbiddenErr(), req, res);
-      }
-      else {
-        // user is admin so go the next middleware
-        next();
-      }
+    if (!req.user.is_admin) {
+      return errHandler(new ForbiddenErr(), req, res);
     }
-    // user is not logged in
     else {
-      return errHandler(new UnauthorizedErr(), req, res);
+      // user is admin so go the next middleware
+      next();
     }
   },
 

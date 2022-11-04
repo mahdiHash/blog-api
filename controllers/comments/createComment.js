@@ -1,11 +1,9 @@
 const Comment = require('../../models/comment');
 const Post = require('../../models/post');
-const User = require('../../models/user');
 const passport = require('passport');
 const { body, validationResult } = require('express-validator');
 const errHandler = require('../error');
 const {
-  UnauthorizedErr,
   BadGatewayErr,
 } = require('../../lib/errors');
 
@@ -14,15 +12,6 @@ require('../../config/passport');
 const controller = [
   passport.initialize(),
   passport.authenticate('jwt', { session: false }),
-
-  // authentication check
-  (req, res, next) => {
-    if (!req.user) {
-      return errHandler(new UnauthorizedErr(), req, res);
-    }
-
-    next();
-  },
 
   // validation
   body('text', 'The comment text can\'t be empty').trim().isLength({ min: 1 }),
