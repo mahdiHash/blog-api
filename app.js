@@ -3,6 +3,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 const errHandler = require('./controllers/error');
+const graphqlSchema = require('./graphQL/schema');
+const { graphqlHTTP } = require('express-graphql');
 const { ServerSideErr, NotFoundErr } = require('./lib/errors');
 
 const usersRouter = require('./routes/users');
@@ -35,6 +37,11 @@ app.use('/img', imgRouter);
 app.use('/posts', postsRouter);
 app.use('/comments', commentsRouter);
 app.use('/ld', likeDislikeRouter);
+
+app.post('/graphql', graphqlHTTP({
+  schema: graphqlSchema,
+  graphiql: process.env.NODE_ENV === 'development',
+}));
 
 // 404 hanlder
 app.use((req, res, next) => {
