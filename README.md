@@ -2,7 +2,7 @@
 
 The idea of this project is taken from [Blog-API](https://www.theodinproject.com/lessons/nodejs-blog-api) of [The Odin Project](https://www.theodinproject.com).
 
-My goal in this project was to practice authentication with [Passport-jwt](http://www.passportjs.org/packages/passport-jwt/) strategy and build my first api. 
+My goal in this project was to practice authentication with [Passport-jwt](http://www.passportjs.org/packages/passport-jwt/) strategy, learn how to implement CRUD operations with [GraphQL](https://graphql.org), and build my first api. 
 
 The technologies I used:
 - JavaScript on server-side,
@@ -10,6 +10,7 @@ The technologies I used:
 - [Express.js](https://expressjs.com) framework,
 - [MongoDB](https://mongodb.com) database and [Mongoose](https://mongoosejs.com/) library,
 - [Multer](https://github.com/expressjs/multer) package,
+- [GraphQL](https://graphql.org) package,
 - [Passport-jwt](http://www.passportjs.org/packages/passport-jwt/) and [Passport-local](https://www.passportjs.org/packages/passport-local/) for authentication.
 
 To know how to use it and read about features, please visit [this file](https://github.com/mahdiHash/blog-api/blob/master/howToUse.md).
