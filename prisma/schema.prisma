@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id            Int       @id @default(autoincrement())
+  username      String    @unique
+  password      String
+  joinDate        DateTime  @default(now()) @db.Timestamp()
+  profilePicUrl String?
+  role          UserRoles
+  lastLoginDate     DateTime  @db.Timestamp()
+
+  comments comments[]
+}
+
+model posts {
+  id              Int      @id @default(autoincrement())
+  title           String
+  date            DateTime @db.Timestamp()
+  content         String
+  lastUpdate      DateTime @db.Timestamp()
+  urlEncodedTitle String
+
+  comments comments[]
+}
+
+model comments {
+  id        Int       @id @default(autoincrement())
+  user      users     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  date      DateTime  @db.Timestamp()
+  post      posts     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int
+  text      String    @db.VarChar(750)
+  isEdited  Boolean
+  replyTo   comments? @relation("parentComment", fields: [inReplyTo], references: [id], onDelete: Cascade)
+  inReplyTo Int?
+
+  replies comments[] @relation("parentComment")
+}
+
+enum UserRoles {
+  USER
+  ADMIN
+}

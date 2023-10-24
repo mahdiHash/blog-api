@@ -1,0 +1,185 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: ID!
+
+  """Username of the user."""
+  username: String!
+
+  """Role of the user. Can be either "USER" or "ADMIN"."""
+  role: UserRoles!
+
+  """When the user signed up in Timestamp format"""
+  joinDate: DateTime!
+
+  """Relative path to user's profile pic e.g. "/img/path/to/image.jpg"."""
+  profilePicUrl: String
+}
+
+enum UserRoles {
+  USER
+  ADMIN
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Post {
+  id: ID!
+
+  """Title of the post."""
+  title: String!
+
+  """A Date() object"""
+  date: DateTime!
+
+  """Content of the post."""
+  content: String!
+
+  """A Date() object"""
+  lastUpdate: DateTime!
+
+  """
+  The url-encoded form of title. Can be used to create a link to the post.
+  """
+  urlEncodedTitle: String!
+}
+
+type Comment {
+  id: ID!
+
+  """Id of the author."""
+  userId: Float!
+
+  """Author of the comment."""
+  user: User!
+
+  """A Date() object."""
+  date: DateTime!
+
+  """Id of the post the comment is submitted to."""
+  postId: Float!
+
+  """Post object that the comment is submitted to."""
+  post: Post!
+
+  """Content of the comment. Max characters count: 750."""
+  text: String!
+
+  """`true` if the comment is edited."""
+  isEdited: Boolean!
+
+  """Id of the parent comment."""
+  inReplyTo: Float
+}
+
+type LoginResponse {
+  accessToken: String!
+  user: User!
+}
+
+type Query {
+  """Get current logged in user data"""
+  user: User!
+  userById(id: Int!): User!
+  userByUsername(username: Float!): User!
+  posts: [Post!]!
+  post(id: Int!): Post!
+  comments: [Comment!]!
+  comment(id: Int!): Comment!
+
+  """Get an access token when a user is logged in."""
+  getAccessToken: String!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: Int!): User!
+  createPost(createPostInput: CreatePostInput!): Post!
+  updatePost(updatePostInput: UpdatePostInput!): Post!
+  removePost(id: Int!): Post!
+  createComment(createCommentInput: CreateCommentInput!): Comment!
+  updateComment(updateCommentInput: UpdateCommentInput!): Comment!
+  removeComment(id: Int!): Comment!
+
+  """
+  Use this resolver to get an access token and user object if the credentials you provided are correct.
+  """
+  login(loginInput: LoginInput!): LoginResponse!
+}
+
+input CreateUserInput {
+  """
+  Username must:  
+  1- be a string  
+  2- contain at least 3 characters  
+  3- be alphanumeric
+  """
+  username: String!
+
+  """
+  Password must:  
+  1- be a string  
+  2- contain at least 8 characters
+  """
+  password: String!
+
+  """This field must be equal to  `password`  field"""
+  passwordRepeat: String!
+}
+
+input UpdateUserInput {
+  """
+  Username must:  
+  1- be a string  
+  2- contain at least 3 characters  
+  3- be alphanumeric
+  """
+  username: String
+
+  """
+  Password must:  
+  1- be a string  
+  2- contain at least 8 characters
+  """
+  password: String
+
+  """This field must be equal to  `password`  field"""
+  passwordRepeat: String
+  id: Int!
+}
+
+input CreatePostInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdatePostInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreateCommentInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateCommentInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input LoginInput {
+  """Username of the user"""
+  username: String!
+
+  """Password of the user"""
+  password: String!
+}
