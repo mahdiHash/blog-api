@@ -13,9 +13,7 @@ export class CreateUserInput {
   @IsString({ message: 'username must be a string' })
   @MinLength(3, { message: 'username must contain at least 3 characters' })
   @IsAlphanumeric('en-US', { message: 'username must be alphanumber' })
-  @IsUsernameTaken({
-    message: 'Username is already taken. Please choose another one.',
-  })
+  @IsUsernameTaken({ message: 'Username is already taken. Please choose another one.' })
   username: string;
 
   /**
