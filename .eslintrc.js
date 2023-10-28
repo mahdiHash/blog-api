@@ -59,6 +59,5 @@ module.exports = {
     'prefer-const': 'error',
     'prefer-promise-reject-errors': 'error',
     'spaced-comment': 'warn',
-    'quotes': ['warn', 'single'],
   },
 };
