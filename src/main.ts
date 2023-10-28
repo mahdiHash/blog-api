@@ -7,13 +7,14 @@ import { envVariables } from './config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.use(cookieParser(envVariables.cookieSecret));
   app.use(helmet({
     contentSecurityPolicy: envVariables.nodeEnv === 'production'
   }));
-  app.use(cookieParser(envVariables.cookieSecret));
 
   app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(envVariables.port);
 }
+
 bootstrap();
