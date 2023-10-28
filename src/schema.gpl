@@ -83,10 +83,10 @@ type LoginResponse {
 }
 
 type Query {
-  """Get current logged in user data"""
+  """Get current logged in user's data."""
   user: User!
   userById(id: Int!): User!
-  userByUsername(username: Float!): User!
+  userByUsername(username: String!): User!
   posts: [Post!]!
   post(id: Int!): Post!
   comments: [Comment!]!
@@ -98,6 +98,8 @@ type Query {
 
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
+
+  """Update user's data."""
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(id: Int!): User!
   createPost(createPostInput: CreatePostInput!): Post!
@@ -111,6 +113,9 @@ type Mutation {
   Use this resolver to get an access token and user object if the credentials you provided are correct.
   """
   login(loginInput: LoginInput!): LoginResponse!
+
+  """Logout of user account."""
+  logout: String!
 }
 
 input CreateUserInput {
@@ -133,6 +138,9 @@ input CreateUserInput {
   passwordRepeat: String!
 }
 
+"""
+Update inputs fields are optional and only the provided fields will be updated.
+"""
 input UpdateUserInput {
   """
   Username must:  
@@ -151,7 +159,6 @@ input UpdateUserInput {
 
   """This field must be equal to  `password`  field"""
   passwordRepeat: String
-  id: Int!
 }
 
 input CreatePostInput {
