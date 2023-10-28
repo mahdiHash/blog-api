@@ -7,6 +7,9 @@ import { UsersService } from 'src/modules/users';
 import { User } from 'src/modules/users/entities';
 import { extractJwtFromCookie } from '../auth.helper';
 
+/**
+ * Extracts and validates the refresh token from cookie.
+ */
 @Injectable()
 export class RefreshJwtStrategy extends PassportStrategy(Strategy, 'refreshJwt') {
   constructor(private usersService: UsersService) {

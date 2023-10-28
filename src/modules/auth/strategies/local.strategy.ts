@@ -4,6 +4,9 @@ import { AuthService } from '../auth.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { User } from 'src/modules/users/entities/user.entity';
 
+/**
+ * Authenticate user by the provided username and password.
+ */
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(private authService: AuthService) {

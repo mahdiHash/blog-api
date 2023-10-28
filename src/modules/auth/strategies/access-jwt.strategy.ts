@@ -6,6 +6,9 @@ import { IJwtPayload } from '../dto';
 import { UsersService } from 'src/modules/users';
 import { User } from 'src/modules/users/entities';
 
+/**
+ * Extracts and validates access token from Athorization Header.
+ */
 @Injectable()
 export class AccessJwtStrategy extends PassportStrategy(Strategy, 'accessJwt') {
   constructor(private usersService: UsersService) {
