@@ -5,6 +5,7 @@ import { UseGuards } from '@nestjs/common';
 import { GqlLocalAuthGuard } from './guards/gql-local.guard';
 import { LoginInput } from './dto/login.input';
 import { envVariables } from 'src/config';
+import { GqlRefreshJwtAuthGuard } from './guards';
 
 @Resolver()
 export class AuthResolver {
@@ -33,11 +34,27 @@ export class AuthResolver {
     };
   }
 
+  @UseGuards(GqlRefreshJwtAuthGuard)
   @Query(() => String, { description: 'Get an access token when a user is logged in.' })
   getAccessToken(@Context() ctx): string {
-    const { user } = ctx;
+    const { req: { user } } = ctx;
     const accessToken = this.authService.generateAccessToken(user);
 
     return accessToken;
+  }
+
+  @UseGuards(GqlRefreshJwtAuthGuard)
+  @Mutation(() => String, { description: 'Logout of user account.' })
+  logout(@Context() ctx): boolean {
+    const { req: { res }} = ctx;
+
+    res.clearCookie('refreshToken', {
+      httpOnly: true,
+      signed: true,
+      secure: envVariables.nodeEnv === 'production',
+      maxAge: 1000 * 60 * 60 * 24 * 90, // 90 days
+    });
+
+    return true;
   }
 }
