@@ -10,9 +10,9 @@ import {
 export class IsUsernameTakenConstraint implements ValidatorConstraintInterface {
   constructor(private prisma: PrismaService) {}
   
-  async validate(value: string): Promise<boolean> {
+  async validate(username: string): Promise<boolean> {
     const user = await this.prisma.users.findUnique({
-      where: { username: value },
+      where: { username },
     });
 
     if (user !== null) {
