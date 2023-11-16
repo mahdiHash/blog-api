@@ -15,6 +15,7 @@ import { envVariables } from './config';
     UsersModule,
     PostsModule,
     CommentsModule,
+    AuthModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       status400ForVariableCoercionErrors: true,
@@ -31,7 +32,6 @@ import { envVariables } from './config';
         return error;
       }
     }),
-    AuthModule,
   ],
   controllers: [],
   providers: [],
