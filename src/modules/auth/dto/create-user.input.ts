@@ -3,7 +3,7 @@ import { IsAlphanumeric, IsString, MinLength } from 'class-validator';
 import { Match, IsUsernameTaken } from '../../../common/decorators';
 
 @InputType()
-export class CreateUserInput {
+export class SignupInput {
   /**
    * Username must:  
    * 1- be a string  
@@ -26,7 +26,7 @@ export class CreateUserInput {
   password: string;
 
   /**
-   * This field must be equal to  `password`  field
+   * This field must be equal to `password` field
    */
   @Match('password', { message: "Password doesn't match" })
   passwordRepeat: string;
