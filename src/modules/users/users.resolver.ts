@@ -1,24 +1,26 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
-import { CreateUserInput, UpdateUserInput } from './dto';
+import { UpdateUserInput } from './dto';
 import { CurrentUser } from 'src/common/decorators';
-import { ClassSerializerInterceptor, UseGuards, UseInterceptors } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { GqlAccessJwtAuthGuard } from 'src/modules/auth/guards';
+import {
+  BadRequestException,
+  ClassSerializerInterceptor,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 
 @Resolver(() => User)
 export class UsersResolver {
-  constructor(private usersService: UsersService) {}
-
-  @Mutation(() => User)
-  async createUser(@Args('createUserInput') createUserInput: CreateUserInput): Promise<User> {
-    return await this.usersService.createUser(createUserInput);
-  }
+  constructor(
+    private usersService: UsersService,
+  ) {}
 
   @UseGuards(GqlAccessJwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
-  @Query(() => User, { name: 'user', description: 'Get current logged in user data' })
+  @Query(() => User, { name: 'user', description: "Get current logged in user's data." })
   async getCurrentUser(@CurrentUser() user: User): Promise<User> {
     return plainToClass(User, user);
   }
@@ -29,13 +31,24 @@ export class UsersResolver {
   }
 
   @Query(() => User, { name: 'userByUsername' })
-  getUserByUsername(@Args('username') username: number) {
+  getUserByUsername(@Args('username') username: string) {
     return this.usersService.getUser(username);
   }
+  @UseGuards(GqlAccessJwtAuthGuard)
+  @Mutation(() => User, { description: "Update user's data." })
+  async updateUser(
+    @Args('updateUserInput') updateUserInput: UpdateUserInput,
+    @CurrentUser() user: User,
+  ) {
+    if (updateUserInput.username !== user.username) {
+      const duplicateUsername = await this.usersService.getUser(updateUserInput.username);
 
-  @Mutation(() => User)
-  updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    return this.usersService.update(updateUserInput.id, updateUserInput);
+      if (duplicateUsername) {
+        throw new BadRequestException('Username is already taken. Please choose another one.');
+      }
+    }
+
+    return await this.usersService.update(user.id, updateUserInput);
   }
 
   @Mutation(() => User)

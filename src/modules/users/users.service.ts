@@ -3,6 +3,7 @@ import { hash } from 'bcryptjs';
 import { User } from './entities/user.entity';
 import { plainToClass } from 'class-transformer';
 import * as dto from './dto';
+import { SignupInput } from '../auth/dto';
 import {
   ClassSerializerInterceptor,
   Injectable,
@@ -21,11 +22,11 @@ export class UsersService {
    * @returns created user object
    */
   @UseInterceptors(ClassSerializerInterceptor)
-  async createUser(createUserInput: dto.CreateUserInput): Promise<User> {
+  async createUser(createUserInput: SignupInput): Promise<User> {
     const hashedPass = await hash(createUserInput.password, 16);
     const user = await this.prisma.users.create({
       data: {
-        username: createUserInput.username,
+        username: createUserInput.username.toLowerCase(),
         password: hashedPass,
         role: 'USER',
         lastLoginDate: new Date(),
@@ -70,8 +71,18 @@ export class UsersService {
     return hideSensitiveFields ? plainToClass(User, user) : user;
   }
 
-  update(id: number, updateUserInput: dto.UpdateUserInput) {
-    return `This action updates a #${id} user`;
+  @UseInterceptors(ClassSerializerInterceptor)
+  async update(id: number, updateUserInput: dto.UpdateUserInput, hideSensitiveFields = true): Promise<User> {
+    const hashedPass = updateUserInput.password ? await hash(updateUserInput.password, 16) : undefined;
+    const user = await this.prisma.users.update({
+      where: { id },
+      data: {
+        username: updateUserInput.username,
+        password: hashedPass,
+      },
+    });
+
+    return hideSensitiveFields ? plainToClass(User, user) : user;
   }
 
   remove(id: number) {
