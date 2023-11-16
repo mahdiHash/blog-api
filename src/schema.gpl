@@ -28,6 +28,16 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type LoginResponse {
+  accessToken: String!
+  user: User!
+}
+
+type SignupResponse {
+  user: User!
+  accessToken: String!
+}
+
 type Post {
   id: ID!
 
@@ -77,11 +87,6 @@ type Comment {
   inReplyTo: Float
 }
 
-type LoginResponse {
-  accessToken: String!
-  user: User!
-}
-
 type Query {
   """Get current logged in user's data."""
   user: User!
@@ -97,8 +102,6 @@ type Query {
 }
 
 type Mutation {
-  createUser(createUserInput: CreateUserInput!): User!
-
   """Update user's data."""
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(id: Int!): User!
@@ -110,7 +113,12 @@ type Mutation {
   removeComment(id: Int!): Comment!
 
   """
-  Use this resolver to get an access token and user object if the credentials you provided are correct.
+  You can create a new user record with this resolver. You'll be given an access token and user's data.
+  """
+  signup(signupInput: SignupInput!): SignupResponse!
+
+  """
+  Use this resolver to get an access token and user data if the credentials you provided are correct.
   """
   login(loginInput: LoginInput!): LoginResponse!
 
@@ -118,29 +126,7 @@ type Mutation {
   logout: String!
 }
 
-input CreateUserInput {
-  """
-  Username must:  
-  1- be a string  
-  2- contain at least 3 characters  
-  3- be alphanumeric
-  """
-  username: String!
-
-  """
-  Password must:  
-  1- be a string  
-  2- contain at least 8 characters
-  """
-  password: String!
-
-  """This field must be equal to  `password`  field"""
-  passwordRepeat: String!
-}
-
-"""
-Update inputs fields are optional and only the provided fields will be updated.
-"""
+"""All the fields are optional. Only the provided fields will be updated."""
 input UpdateUserInput {
   """
   Username must:  
@@ -157,7 +143,7 @@ input UpdateUserInput {
   """
   password: String
 
-  """This field must be equal to  `password`  field"""
+  """This field must be equal to `password` field"""
   passwordRepeat: String
 }
 
@@ -181,6 +167,26 @@ input UpdateCommentInput {
   """Example field (placeholder)"""
   exampleField: Int
   id: Int!
+}
+
+input SignupInput {
+  """
+  Username must:  
+  1- be a string  
+  2- contain at least 3 characters  
+  3- be alphanumeric
+  """
+  username: String!
+
+  """
+  Password must:  
+  1- be a string  
+  2- contain at least 8 characters
+  """
+  password: String!
+
+  """This field must be equal to `password` field"""
+  passwordRepeat: String!
 }
 
 input LoginInput {
