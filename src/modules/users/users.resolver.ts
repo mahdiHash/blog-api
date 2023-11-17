@@ -34,6 +34,7 @@ export class UsersResolver {
   getUserByUsername(@Args('username') username: string) {
     return this.usersService.getUser(username);
   }
+  
   @UseGuards(GqlAccessJwtAuthGuard)
   @Mutation(() => User, { description: "Update user's data." })
   async updateUser(
