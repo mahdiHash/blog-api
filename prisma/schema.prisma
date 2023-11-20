@@ -14,7 +14,7 @@ model users {
   joinDate      DateTime  @default(now()) @db.Timestamp()
   profilePicUrl String?
   role          UserRoles
-  lastLoginDate DateTime  @db.Timestamp()
+  lastLoginDate DateTime? @db.Timestamp()
 
   comments comments[]
 }
@@ -38,7 +38,7 @@ model comments {
   post      posts     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    Int
   text      String    @db.VarChar(750)
-  isEdited  Boolean
+  isEdited  Boolean   @default(false)
   replyTo   comments? @relation("parentComment", fields: [inReplyTo], references: [id], onDelete: Cascade)
   inReplyTo Int?
 
