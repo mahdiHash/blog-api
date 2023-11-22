@@ -14,7 +14,7 @@ type User {
   """When the user signed up in Timestamp format"""
   joinDate: DateTime!
 
-  """Relative path to user's profile pic e.g. "/img/path/to/image.jpg"."""
+  """Relative path to user's profile pic e.g. "/media/path/to/image.jpg"."""
   profilePicUrl: String
 }
 
@@ -104,7 +104,9 @@ type Query {
 type Mutation {
   """Update user's data."""
   updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(id: Int!): User!
+
+  """Remove the current user's profile."""
+  removeUser: User!
   createPost(createPostInput: CreatePostInput!): Post!
   updatePost(updatePostInput: UpdatePostInput!): Post!
   removePost(id: Int!): Post!

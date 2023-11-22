@@ -9,6 +9,7 @@ import { CommentsModule } from './modules/comments/comments.module';
 import { GraphQLError } from 'graphql';
 import { AuthModule } from './modules/auth/auth.module';
 import { envVariables } from './config';
+import { MediaModule } from './modules/media/media.module';
 
 @Module({
   imports: [
@@ -25,13 +26,14 @@ import { envVariables } from './config';
       introspection: envVariables.nodeEnv !== 'production',
       formatError: (err: GraphQLError) => {
         const error = {
-          message: (err.extensions.originalError as Error)?.message,
+          message: err.message ? err.message : (err.extensions.originalError as Error)?.message,
           path: err.path,
         }
 
         return error;
       }
     }),
+    MediaModule,
   ],
   controllers: [],
   providers: [],

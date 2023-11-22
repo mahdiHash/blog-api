@@ -5,6 +5,7 @@ import { UpdateUserInput } from './dto';
 import { CurrentUser } from 'src/common/decorators';
 import { plainToClass } from 'class-transformer';
 import { GqlAccessJwtAuthGuard } from 'src/modules/auth/guards';
+import { MediaService } from '../media';
 import {
   BadRequestException,
   ClassSerializerInterceptor,
@@ -16,6 +17,7 @@ import {
 export class UsersResolver {
   constructor(
     private usersService: UsersService,
+    private mediaService: MediaService,
   ) {}
 
   @UseGuards(GqlAccessJwtAuthGuard)
@@ -52,8 +54,20 @@ export class UsersResolver {
     return await this.usersService.update(user.id, updateUserInput);
   }
 
-  @Mutation(() => User)
-  removeUser(@Args('id', { type: () => Int }) id: number) {
-    return this.usersService.remove(id);
+  @UseGuards(GqlAccessJwtAuthGuard)
+  @Mutation(() => User, {
+    description: "Remove the current user's profile.",
+  })
+  async removeUser(@CurrentUser() { id, profilePicUrl }: User): Promise<User> {
+    const [removedUser] = await Promise.all([
+      this.usersService.remove(id),
+
+      // Remove the user's profile picture from local storage if it exists
+      profilePicUrl
+        ? this.mediaService.removeFile(profilePicUrl.replace('/media/', ''))
+        : Promise.resolve(),
+    ]);
+
+    return removedUser;
   }
 }

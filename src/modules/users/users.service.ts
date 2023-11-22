@@ -1,4 +1,4 @@
-import { PrismaService } from 'prisma/prisma.service';
+import { PrismaService } from '../../../prisma/prisma.service';
 import { hash } from 'bcryptjs';
 import { User } from './entities/user.entity';
 import { plainToClass } from 'class-transformer';
@@ -85,7 +85,17 @@ export class UsersService {
     return hideSensitiveFields ? plainToClass(User, user) : user;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  /**
+   * 
+   * @param id - User's id to remove.
+   * @param hideSensitiveFields - Hide the feilds that should not be exposed, e.g. `password`.
+   * @returns The removed user's data.
+   */
+  async remove(id: number, hideSensitiveFields = true): Promise<User> {
+    const user = this.prisma.users.delete({
+      where: { id },
+    });
+
+    return hideSensitiveFields ? plainToClass(User, user) : user;
   }
 }
