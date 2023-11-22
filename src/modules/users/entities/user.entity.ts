@@ -30,7 +30,7 @@ export class User implements users {
   joinDate: Date;
   
   /**
-   * Relative path to user's profile pic e.g. "/img/path/to/image.jpg".
+   * Relative path to user's profile pic e.g. "/media/path/to/image.jpg".
    */
   @Field({ nullable: true })
   profilePicUrl: string | null;
