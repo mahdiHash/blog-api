@@ -1,6 +1,6 @@
 import { InputType } from '@nestjs/graphql';
 import { IsAlphanumeric, IsOptional, IsString, MinLength } from 'class-validator';
-import { Match, IsUsernameTaken } from '../../../common/decorators';
+import { Match } from '../../../common/decorators';
 
 /**
  * All the fields are optional. Only the provided fields will be updated.
